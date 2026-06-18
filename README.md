@@ -91,25 +91,23 @@ EcoBot provides:
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
 
 ```mermaid
-graph TD
-    subgraph Client [Browser Client (React + TanStack Start)]
-        UI[Dashboard & Tracker] --> LS[(Local Storage)]
-        UI --> SF[Server Function]
-    end
+flowchart LR
 
-    subgraph Server [Secure Server Layer]
-        SF --> ZV[Zod Validation]
-        ZV --> RL[Rate Limiter]
-        RL --> PS[PII Scrubber]
-        PS --> GF[Secure Fetch Wrapper]
-    end
+    A[User] --> B[React Dashboard]
 
-    subgraph AI [AI Upstream]
-        GF --> GM[Google Gemini API]
-    end
+    B --> C[(Local Storage)]
+
+    B --> D[Server Function]
+
+    D --> E[Zod Validation]
+    E --> F[Rate Limiter]
+    F --> G[PII Scrubber]
+    G --> H[Secure Fetch Wrapper]
+
+    H --> I[Google Gemini API]
 ```
 
 ### Architecture Highlights
