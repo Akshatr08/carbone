@@ -91,23 +91,37 @@ EcoBot provides:
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architecture
 
 ```mermaid
 flowchart LR
 
-    A[User] --> B[React Dashboard]
+    subgraph Client
+        A[Dashboard]
+        B[(Local Storage)]
+        C[Server Function]
 
-    B --> C[(Local Storage)]
+        A --> B
+        A --> C
+    end
 
-    B --> D[Server Function]
+    subgraph Server
+        D[Zod Validation]
+        E[Rate Limiter]
+        F[PII Scrubber]
+        G[Secure Fetch Wrapper]
 
-    D --> E[Zod Validation]
-    E --> F[Rate Limiter]
-    F --> G[PII Scrubber]
-    G --> H[Secure Fetch Wrapper]
+        D --> E
+        E --> F
+        F --> G
+    end
 
-    H --> I[Google Gemini API]
+    subgraph AI
+        H[Google Gemini API]
+    end
+
+    C --> D
+    G --> H
 ```
 
 ### Architecture Highlights
