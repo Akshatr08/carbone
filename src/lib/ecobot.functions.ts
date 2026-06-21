@@ -15,8 +15,7 @@ const SafeText = z
   .string()
   .min(1)
   .max(2000)
-  // eslint-disable-next-line no-control-regex
-  .regex(/^[^\x00-\x08\x0B-\x1F\x7F]+$/u, "Text contains control characters");
+  .regex(/^[^\p{Cc}]+$/u, "Text contains control characters");
 
 const MessageSchema = z.object({
   role: z.enum(["user", "assistant"]),
@@ -114,8 +113,6 @@ export const ecoBotReply = createServerFn({ method: "POST" })
       );
 
       if (!response.ok) {
-        const errText = await response.text();
-        console.error("Gemini upstream error", response.status, errText.slice(0, 500));
         return {
           ok: false as const,
           reply: `EcoBot ran into a temporary issue (${response.status}). Please try again in a moment.`,
@@ -147,7 +144,6 @@ export const ecoBotReply = createServerFn({ method: "POST" })
 
       return { ok: true as const, reply };
     } catch (e) {
-      console.error("Gemini fetch failed", e);
       return {
         ok: false as const,
         reply: "EcoBot couldn't reach the AI service. Please try again shortly.",

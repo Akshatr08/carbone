@@ -13,8 +13,7 @@ const schema = z.object({
           .trim()
           .min(1)
           .max(4000)
-          // eslint-disable-next-line no-control-regex
-          .refine((s) => !/[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(s), {
+          .refine((s) => !/\p{Cc}/u.test(s), {
             message: "Contains invalid control characters",
           }),
       }),

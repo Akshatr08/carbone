@@ -16,12 +16,12 @@ interface Props {
  */
 export function KPICard({ eyebrow, label, value, delta, variant = "default", hint }: Props): JSX.Element {
   const base = "rounded-xl p-5 hairline";
-  const cls =
-    variant === "dark"
-      ? "bg-charcoal text-charcoal-foreground border-charcoal"
-      : variant === "gold"
-        ? "bg-surface border-2 border-gold"
-        : "bg-surface";
+  let cls = "bg-surface";
+  if (variant === "dark") {
+    cls = "bg-charcoal text-charcoal-foreground border-charcoal";
+  } else if (variant === "gold") {
+    cls = "bg-surface border-2 border-gold";
+  }
   const muted = variant === "dark" ? "text-hint" : "text-muted-foreground";
   return (
     <div className={`${base} ${cls}`}>

@@ -44,7 +44,7 @@ export const BENCHMARKS = {
   indiaMonthly: 158, // 1.9 t/yr ÷ 12
   globalMonthly: 392, // 4.7 t/yr ÷ 12
   parisMonthly: 167, // 2.0 t/yr ÷ 12
-};
+} as const;
 
 export type TransportMode = keyof typeof TRANSPORT_FACTORS;
 export type EnergyType = keyof typeof ENERGY_FACTORS;
