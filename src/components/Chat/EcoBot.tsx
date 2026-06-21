@@ -28,7 +28,11 @@ const INITIAL: Msg[] = [
 
 const MAX_LEN = 2000;
 
-export function EcoBot() {
+/**
+ * The EcoBot AI chat assistant component.
+ * @returns {JSX.Element} The EcoBot interface.
+ */
+export function EcoBot(): JSX.Element {
   const [messages, setMessages] = useLocalStorage<Msg[]>("carbone.chat", INITIAL);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
@@ -175,7 +179,14 @@ export function EcoBot() {
   );
 }
 
-function Dot({ delay = 0, reduced = false }: { delay?: number; reduced?: boolean }) {
+/**
+ * A loading dot animation for the EcoBot typing indicator.
+ * @param {Object} props
+ * @param {number} [props.delay=0] - Animation delay in ms.
+ * @param {boolean} [props.reduced=false] - If true, disables the pulse animation.
+ * @returns {JSX.Element} A loading dot.
+ */
+function Dot({ delay = 0, reduced = false }: { delay?: number; reduced?: boolean }): JSX.Element {
   return (
     <span
       className={[

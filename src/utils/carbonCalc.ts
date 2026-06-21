@@ -88,7 +88,12 @@ export function getByCategory(activities: Activity[]): Record<ActivityCategory, 
 /**
  * Compare user's monthly kg vs India / Global / Paris benchmarks.
  */
-export function compareToAverage(userKg: number) {
+export function compareToAverage(userKg: number): {
+  vsIndia: number;
+  vsGlobal: number;
+  vsParis: number;
+  percentile: number;
+} {
   const vsIndia = +(((userKg - BENCHMARKS.indiaMonthly) / BENCHMARKS.indiaMonthly) * 100).toFixed(
     1,
   );

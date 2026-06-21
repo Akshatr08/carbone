@@ -45,7 +45,11 @@ const BREAKDOWN = [
   { month: "Jun", transport: 160, energy: 150, food: 85, shopping: 12 },
 ];
 
-function Insights() {
+/**
+ * The Insights page showing patterns in user footprint.
+ * @returns {JSX.Element} The Insights page component.
+ */
+function Insights(): JSX.Element {
   const { activities } = useActivities();
   const [exporting, setExporting] = useState(false);
 
@@ -177,6 +181,15 @@ function Insights() {
   );
 }
 
+/**
+ * A simple statistic display component.
+ * @param {Object} props
+ * @param {string} props.label - The label for the stat.
+ * @param {number} props.value - The value for the stat.
+ * @param {boolean} [props.highlight] - Whether to highlight the stat in gold.
+ * @param {boolean} [props.eco] - Whether to highlight the stat in eco green.
+ * @returns {JSX.Element} The Stat component.
+ */
 function Stat({
   label,
   value,
@@ -187,7 +200,7 @@ function Stat({
   value: number;
   highlight?: boolean;
   eco?: boolean;
-}) {
+}): JSX.Element {
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
@@ -202,7 +215,13 @@ function Stat({
   );
 }
 
-function ScoreRing({ score }: { score: number }) {
+/**
+ * SVG Ring indicating the user's eco score.
+ * @param {Object} props
+ * @param {number} props.score - The user's eco score from 0 to 100.
+ * @returns {JSX.Element} The ScoreRing component.
+ */
+function ScoreRing({ score }: { score: number }): JSX.Element {
   const r = 28,
     c = 2 * Math.PI * r;
   const offset = c - (score / 100) * c;

@@ -6,8 +6,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (including devDependencies for build)
-RUN npm install
+# Install dependencies using npm ci for deterministic builds
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .
@@ -22,6 +22,9 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=8080
+
+# Run as non-root user for better security and code quality
+USER node
 
 # Copy only the compiled output from the builder stage
 COPY --from=builder /app/.output ./.output

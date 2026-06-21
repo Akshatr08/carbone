@@ -55,7 +55,11 @@ const fieldCls =
   "h-10 w-full rounded-md bg-input px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-gold";
 const labelCls = "mb-1.5 flex items-center gap-1 text-xs font-medium text-muted-foreground";
 
-export function ActivityForm() {
+/**
+ * Renders a form for users to input their daily activities and calculate carbon emissions.
+ * @returns {JSX.Element} The ActivityForm component.
+ */
+export function ActivityForm(): JSX.Element {
   const [tab, setTab] = useState<ActivityCategory>("transport");
   const { add } = useActivities();
   const [toast, setToast] = useState<{ msg: string; kind: "ok" | "error" } | null>(null);
@@ -65,6 +69,9 @@ export function ActivityForm() {
     setTimeout(() => setToast(null), 2500);
   };
 
+  /**
+   * Helper function to parse form data and add an activity.
+   */
   function handle<T>(
     e: React.FormEvent<HTMLFormElement>,
     schema: z.ZodType<T>,
@@ -324,7 +331,11 @@ export function ActivityForm() {
   );
 }
 
-function SubmitBtn() {
+/**
+ * A submit button used within the ActivityForm.
+ * @returns {JSX.Element} The SubmitBtn component.
+ */
+function SubmitBtn(): JSX.Element {
   return (
     <button
       type="submit"

@@ -9,7 +9,12 @@ interface Props {
   hint?: string;
 }
 
-export function KPICard({ eyebrow, label, value, delta, variant = "default", hint }: Props) {
+/**
+ * A Key Performance Indicator card for the dashboard.
+ * @param {Props} props
+ * @returns {JSX.Element} The KPICard component.
+ */
+export function KPICard({ eyebrow, label, value, delta, variant = "default", hint }: Props): JSX.Element {
   const base = "rounded-xl p-5 hairline";
   const cls =
     variant === "dark"
