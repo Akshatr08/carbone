@@ -50,7 +50,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             Try again
           </button>
-          <a href="/" className="rounded-md border-[0.5px] border-border px-4 py-2 text-sm">
+          <a href="/" className="rounded-md border-[0.5px] border-border px-4 py-2 text-sm" aria-label="Go home">
             Home
           </a>
         </div>

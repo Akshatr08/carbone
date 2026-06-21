@@ -4,6 +4,7 @@ import { Leaf, Send } from "lucide-react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { ecoBotReply } from "@/lib/ecobot.functions";
 import { usePrefersReducedMotion } from "@/utils/motion";
+import { sanitizeInput } from "@/lib/input-sanitizer";
 
 interface Msg {
   role: "user" | "assistant";
@@ -49,7 +50,7 @@ export function EcoBot(): JSX.Element {
 
   const send = useCallback(
     async (text: string) => {
-      const content = text.trim().slice(0, MAX_LEN);
+      const content = sanitizeInput(text.trim().slice(0, MAX_LEN));
       if (!content || pending) return;
       const next = [...messages, { role: "user" as const, content }];
       setMessages(next);

@@ -41,7 +41,12 @@ function uid(): string {
   return `id-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-export function useActivities() {
+export function useActivities(): {
+  activities: Activity[];
+  add: (a: Omit<Activity, "id" | "date">) => void;
+  remove: (id: string) => void;
+  clear: () => void;
+} {
   const [activities, setActivities] = useLocalStorage<Activity[]>("carbone.activities", SEED);
   const add = (a: Omit<Activity, "id" | "date">) =>
     setActivities([{ ...a, id: uid(), date: new Date().toISOString() }, ...activities]);
@@ -50,7 +55,12 @@ export function useActivities() {
   return { activities, add, remove, clear };
 }
 
-export function useCommitments() {
+export function useCommitments(): {
+  committed: string[];
+  toggle: (id: string) => void;
+  streak: number;
+  history: Record<string, string[]>;
+} {
   const [committed, setCommitted] = useLocalStorage<string[]>("carbone.committed", []);
   const [history, setHistory] = useLocalStorage<Record<string, string[]>>(
     "carbone.commit-history",

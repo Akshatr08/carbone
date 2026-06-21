@@ -35,7 +35,7 @@ const securityHeadersMiddleware = createMiddleware().server(async ({ next }) => 
         "img-src 'self' data: https:",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com data:",
-        "script-src 'self' 'unsafe-inline'",
+        "script-src 'self'",
         "connect-src 'self' https://generativelanguage.googleapis.com",
         "frame-ancestors 'none'",
         "base-uri 'self'",
