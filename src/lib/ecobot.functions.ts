@@ -92,25 +92,31 @@ export const ecoBotReply = createServerFn({ method: "POST" })
       };
     }
 
-    const contents: GeminiContent[] = cleaned.map((m) => ({
-      role: m.role === "user" ? "user" : "model",
-      parts: [{ text: m.content }],
-    }));
+    const messagesPayload = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...cleaned.map((m) => ({
+        role: m.role,
+        content: m.content,
+      })),
+    ];
 
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents,
-            generationConfig: { temperature: 0.7, maxOutputTokens: 600 },
-          }),
-          signal: AbortSignal.timeout(10000), // 10 second timeout
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+          "HTTP-Referer": "https://carbone.vercel.app",
+          "X-Title": "Carbone",
         },
-      );
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: messagesPayload,
+          temperature: 0.7,
+          max_tokens: 600,
+        }),
+        signal: AbortSignal.timeout(10000),
+      });
 
       if (!response.ok) {
         return {
@@ -127,13 +133,10 @@ export const ecoBotReply = createServerFn({ method: "POST" })
       }
 
       const json = (await response.json()) as {
-        candidates?: { content?: { parts?: { text?: string }[] } }[];
+        choices?: { message?: { content?: string } }[];
       };
       const reply =
-        json.candidates?.[0]?.content?.parts
-          ?.map((p) => p.text)
-          .join("")
-          .trim() ?? "Hmm, I didn't get that. Could you rephrase?";
+        json.choices?.[0]?.message?.content?.trim() ?? "Hmm, I didn't get that. Could you rephrase?";
 
       // Cache + bound size
       if (CACHE.size >= CACHE_MAX) {
