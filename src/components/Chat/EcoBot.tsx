@@ -29,12 +29,21 @@ const INITIAL: Msg[] = [
 
 const MAX_LEN = 2000;
 
+// Strip dangerous control characters (everything except \t, \n, \r) from a string.
+const stripControlChars = (s: string) => s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "");
+
+// Sanitize messages loaded from localStorage so stale/corrupted history
+// doesn't cause the API validator to reject the entire request.
+const sanitizeMessages = (msgs: Msg[]): Msg[] =>
+  msgs.map((m) => ({ ...m, content: stripControlChars(m.content) }));
+
 /**
  * The EcoBot AI chat assistant component.
  * @returns {JSX.Element} The EcoBot interface.
  */
 export function EcoBot(): JSX.Element {
-  const [messages, setMessages] = useLocalStorage<Msg[]>("carbone.chat", INITIAL);
+  const [rawMessages, setMessages] = useLocalStorage<Msg[]>("carbone.chat", INITIAL);
+  const messages = sanitizeMessages(rawMessages);
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState(false);
   const callBot = useServerFn(ecoBotReply);

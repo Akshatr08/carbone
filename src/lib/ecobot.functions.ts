@@ -10,12 +10,14 @@ Give specific, actionable, data-backed advice. Reference Indian context — elec
 Be encouraging, concise, and practical. Never use jargon without explaining it.
 Keep answers under 180 words. Use short paragraphs and bullets when listing actions.`;
 
-// Reject control chars to deter prompt-injection via hidden bytes.
+// Reject dangerous control chars to deter prompt-injection via hidden bytes.
+// Allow \t (tab), \n (newline), \r (carriage return) — these appear in AI replies
+// stored in localStorage and re-sent as conversation history.
 const SafeText = z
   .string()
   .min(1)
   .max(2000)
-  .regex(/^[^\p{Cc}]+$/u, "Text contains control characters");
+  .regex(/^[^\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+$/u, "Text contains control characters");
 
 const MessageSchema = z.object({
   role: z.enum(["user", "assistant"]),
